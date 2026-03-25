@@ -2,115 +2,67 @@
 
 **Deja de buscar piso. Haz que te encuentren.**
 
-Simplit es una plataforma que ayuda a inquilinos en Barcelona a procesar y verificar sus documentos de alquiler con IA. Las agencias inmobiliarias encuentran a los inquilinos, no al revés.
+Simplit helps renters in Barcelona prepare their rental documents and get found by agencies. Users upload docs, AI verifies them, agencies contact users with available apartments.
 
-## ¿Qué hace Simplit?
+## Quick Start
 
-1. **Usuarios suben documentos** (NIE, nóminas, contrato, extractos bancarios, etc.)
-2. **IA verifica los documentos** y genera un perfil con badges de confianza
-3. **Agencias ven perfiles verificados** (nunca los documentos originales)
-4. **Agencias contactan directamente** cuando tienen un piso que encaja
+```bash
+# 1. Install dependencies (already done)
+npm install
 
-**NO es una plataforma de búsqueda de pisos.** NO hay listados de apartamentos. Es un marketplace invertido: las agencias encuentran a los inquilinos.
+# 2. Run database migrations
+# Go to https://supabase.com/dashboard/project/eeywlnvxbhpzutenukqb
+# SQL Editor → Paste scripts/migrate.sql → Run
+# See MIGRATION_INSTRUCTIONS.md for details
+
+# 3. Start development server
+npm run dev
+
+# 4. Open http://localhost:3000
+```
 
 ## Tech Stack
 
-- **Next.js 14** (App Router)
-- **TypeScript** (modo estricto)
-- **Supabase** (auth, DB, storage, RLS)
-- **Stripe** (suscripciones)
-- **Resend** (emails transaccionales)
-- **PostHog** (analytics)
-- **Tailwind CSS** (diseño custom)
+- **Next.js 16** — App Router, TypeScript, Tailwind CSS
+- **Supabase** — Auth, Postgres, Storage, RLS
+- **Stripe** — Subscriptions (optional, gracefully degraded)
+- **Lucide React** — Icons
+- **Google Fonts** — DM Serif Display + Inter
 
-## Setup
+## Features
 
-### 1. Install dependencies
+- ✅ Document upload & verification
+- ✅ Profile completion tracking
+- ✅ Agency matching system
+- ✅ Stripe subscriptions (Premium plan)
+- ✅ Mobile responsive
+- ✅ All Spanish UI
 
-```bash
-npm install
-```
+## Documentation
 
-### 2. Configure environment variables
+- [BUILD_COMPLETE.md](./BUILD_COMPLETE.md) — Full build report
+- [MIGRATION_INSTRUCTIONS.md](./MIGRATION_INSTRUCTIONS.md) — Database setup
 
-Copia `.env.example` a `.env.local` y completa las variables:
+## Environment Variables
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=tu-proyecto.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
-SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-NEXT_PUBLIC_STRIPE_PRICE_MONTHLY=price_...
-NEXT_PUBLIC_STRIPE_PRICE_ANNUAL=price_...
-RESEND_API_KEY=re_...
-NEXT_PUBLIC_POSTHOG_KEY=phc_...
-NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
-```
+See `.env.local` (already configured for Supabase).
 
-### 3. Set up Supabase
+For Stripe integration, add:
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `NEXT_PUBLIC_STRIPE_PRICE_MONTHLY`
+- `NEXT_PUBLIC_STRIPE_PRICE_ANNUAL`
 
-Ejecuta el SQL en `supabase-schema.sql` en tu proyecto de Supabase para crear las tablas:
-
-- `profiles`
-- `documents`
-- `subscriptions`
-- `agency_contacts`
-
-Configura RLS (Row Level Security) para que los usuarios solo vean sus propios datos.
-
-Crea un bucket de storage llamado `documents` con políticas de acceso apropiadas.
-
-### 4. Set up Stripe
-
-Crea dos productos en Stripe:
-- **Básico** (free tier, no payment)
-- **Premium** (€19/mes o €149/año)
-
-Copia los Price IDs a las variables de entorno.
-
-### 5. Run locally
+## Scripts
 
 ```bash
-npm run dev
+npm run dev      # Development server
+npm run build    # Production build
+npm run start    # Production server
+npm run lint     # ESLint
 ```
-
-Abre [http://localhost:3000](http://localhost:3000)
-
-## Deploy to Vercel
-
-```bash
-vercel --prod --yes
-```
-
-O conecta el repo de GitHub a Vercel para deploys automáticos.
-
-## Design System
-
-- **Colores:**
-  - Amber warm: `#D4A574` (primary accent)
-  - Navy deep: `#1a2332` (text, headers)
-  - Offwhite: `#FAFAF8` (background)
-  - Success green: `#22C55E` (verified badges)
-
-- **Fuentes:**
-  - DM Sans (body, 400/500/600)
-  - DM Serif Display (headings)
-
-- **Estética:** Cálido, profesional, confiable. NO corporativo genérico. NO glassmorphism, NO gradientes pesados, NO emojis como iconos.
-
-## Pages
-
-1. `/` — Landing page
-2. `/login` — Login/Signup (email + Google OAuth)
-3. `/dashboard` — Dashboard principal
-4. `/profile` — Profile builder (info personal, preferencias, empleo)
-5. `/documents` — Document upload center
-6. `/my-profile` — Vista de cómo te ven las agencias
-7. `/pricing` — Planes y precios
-8. `/account` — Account settings
 
 ## License
 
-Propiedad de Simplit. Todos los derechos reservados.
+Proprietary
